@@ -13,8 +13,13 @@ class storm(
   $user                                        = 'root',
   $group                                       = 'root',
   $home                                        = '/usr/lib/storm',
-  $version                                     = '0.9.3',
+  $version                                     = '0.10.0',
   $lib                                         = '/usr/lib/storm/lib',
+
+  # Install from apache repositories
+  $install_from_tarball                        = false,
+  $apache_repo_url                             = 'https://archive.apache.org/dist/storm/',
+
   # JAR path will be "$lib/$jar_prefix-$version.jar"
   $jar_prefix                                  = 'storm',
   $conf                                        = '/etc/storm',
@@ -78,9 +83,15 @@ class storm(
   validate_array($zookeeper_servers)
   validate_array($topology_kryo_register)
 
+
   class {'storm::install':
-    ensure   => $packages_ensure,
-    packages => $packages,
+    ensure          => $packages_ensure,
+    packages        => $packages,
+    from_tarball    => $install_from_tarball,
+    version         => $version,
+    home            => $home,
+    conf            => $conf,
+    apache_repo_url => $apache_repo_url,
   }
 
   class {'storm::config':
