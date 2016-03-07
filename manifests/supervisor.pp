@@ -52,8 +52,8 @@ class storm::supervisor(
   }
 
   storm::service { 'logviewer':
-    manage_service => true,
-    enable         => true,
+    manage_service => $manage_service,
+    enable         => $enable,
     force_provider => $force_provider,
     config_file    => $config_file,
     jvm_memory     => '128m'

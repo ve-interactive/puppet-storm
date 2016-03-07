@@ -50,6 +50,16 @@ class storm::install(
       target  => "/usr/lib/apache-storm-${version}/conf",
       require => File[$home],
     }
+    
+    file { '/var/log/storm':
+        ensure => 'directory'
+    }
+    
+    file { "${home}/logs":
+        ensure => 'link',
+        target => '/var/log/storm',
+        require => File['/var/log/storm'],
+    }
   }
   else {
     ensure_resource('package', $packages, {'ensure' => $ensure })
