@@ -24,7 +24,6 @@ class storm::ui(
     '-Dlogfile.name=ui.log'
   ],
   $config_file    = $storm::config_file,
-  $from_tarball   = false,
   ) inherits storm {
   validate_bool($manage_service)
   validate_array($jvm)
@@ -38,13 +37,13 @@ class storm::ui(
 
   # Install ui /etc/default
   storm::service { 'ui':
-    manage_service => $manage_service,
-    force_provider => $force_provider,
-    enable         => $enable,
-    config_file    => $config_file,
-    jvm_memory     => $mem,
-    opts           => $jvm,
-    from_tarball   => $from_tarball,
+    manage_service        => $manage_service,
+    force_provider        => $force_provider,
+    enable                => $enable,
+    config_file           => $config_file,
+    jvm_memory            => $mem,
+    opts                  => $jvm,
+    use_systemd_templates => $install_from_tarball,
   }
 
 }

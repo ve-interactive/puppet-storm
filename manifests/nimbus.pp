@@ -33,7 +33,6 @@ class storm::nimbus(
     '-Dlog4j.configuration=file:/etc/storm/storm.log.properties',
     '-Dlogfile.name=nimbus.log'],
   $config_file               = $storm::config_file,
-  $from_tarball              = false,
 ) inherits storm {
 
   concat::fragment { 'nimbus':
@@ -46,14 +45,14 @@ class storm::nimbus(
   # Install nimbus /etc/default
 
   storm::service { 'nimbus':
-    manage_service => $manage_service,
-    config_file    => $config_file,
-    force_provider => $force_provider,
-    enable         => $enable,
-    ensure_service => $ensure_service,
-    jvm_memory     => $mem,
-    opts           => $jvm,
-    from_tarball   => $from_tarball,
-    require        => Class['storm::config']
+    manage_service        => $manage_service,
+    config_file           => $config_file,
+    force_provider        => $force_provider,
+    enable                => $enable,
+    ensure_service        => $ensure_service,
+    jvm_memory            => $mem,
+    opts                  => $jvm,
+    use_systemd_templates => $install_from_tarball,
+    require               => Class['storm::config']
   }
 }

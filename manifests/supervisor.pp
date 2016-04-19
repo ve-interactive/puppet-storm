@@ -29,7 +29,6 @@ class storm::supervisor(
     '-Dlogfile.name=supervisor.log'
   ],
   $config_file               = $storm::config_file,
-  $from_tarball              = false,
 ) inherits storm {
 
   validate_bool($enable)
@@ -44,23 +43,23 @@ class storm::supervisor(
 
   # Install supervisor /etc/default
   storm::service { 'supervisor':
-    manage_service => $manage_service,
-    enable         => $enable,
-    ensure_service => $ensure_service,
-    force_provider => $force_provider,
-    config_file    => $config_file,
-    jvm_memory     => $mem,
-    opts           => $jvm,
-    from_tarball   => $from_tarball,
+    manage_service        => $manage_service,
+    enable                => $enable,
+    ensure_service        => $ensure_service,
+    force_provider        => $force_provider,
+    config_file           => $config_file,
+    jvm_memory            => $mem,
+    opts                  => $jvm,
+    use_systemd_templates => $install_from_tarball,
   }
 
   storm::service { 'logviewer':
-    manage_service => $manage_service,
-    enable         => $enable,
-    force_provider => $force_provider,
-    config_file    => $config_file,
-    jvm_memory     => '128m',
-    from_tarball   => $from_tarball,
+    manage_service        => $manage_service,
+    enable                => $enable,
+    force_provider        => $force_provider,
+    config_file           => $config_file,
+    jvm_memory            => '128m',
+    use_systemd_templates => $install_from_tarball,
   }
 
 

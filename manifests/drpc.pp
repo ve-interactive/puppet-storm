@@ -29,7 +29,6 @@ class storm::drpc(
   $transactional_zookeeper_servers = 'null',
   $transactional_zookeeper_port    = 'null',
   $config_file                     = $storm::config_file,
-  $from_tarball                    = false,
 ) inherits storm {
 
   validate_array($jvm)
@@ -44,14 +43,14 @@ class storm::drpc(
 
   # Install drpc /etc/default
   storm::service { 'drpc':
-    ensure_service => $ensure_service,
-    manage_service => $manage_service,
-    force_provider => $force_provider,
-    enable         => $enable,
-    config_file    => $config_file,
-    jvm_memory     => $mem,
-    opts           => $jvm,
-    from_tarball   => $from_tarball,
+    ensure_service        => $ensure_service,
+    manage_service        => $manage_service,
+    force_provider        => $force_provider,
+    enable                => $enable,
+    config_file           => $config_file,
+    jvm_memory            => $mem,
+    opts                  => $jvm,
+    use_systemd_templates => $install_from_tarball,
   }
 
 }
