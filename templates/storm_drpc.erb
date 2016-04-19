@@ -15,7 +15,3 @@ drpc.https.keystore.type: "JKS"
 drpc.http.creds.plugin: org.apache.storm.security.auth.DefaultHttpCredentialsPlugin
 drpc.authorizer.acl.filename: "drpc-auth-acl.yaml"
 drpc.authorizer.acl.strict: false
-
-transactional.zookeeper.root: "<%= @transactional_zookeeper_root %>"
-transactional.zookeeper.servers: <%= @transactional_zookeeper_servers %>
-transactional.zookeeper.port: <%= @transactional_zookeeper_port %>
