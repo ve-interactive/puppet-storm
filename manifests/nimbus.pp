@@ -32,7 +32,8 @@ class storm::nimbus(
   $jvm                       = [
     '-Dlog4j.configuration=file:/etc/storm/storm.log.properties',
     '-Dlogfile.name=nimbus.log'],
-  $config_file               = $storm::config_file
+  $config_file               = $storm::config_file,
+  $from_tarball              = false,
 ) inherits storm {
 
   concat::fragment { 'nimbus':

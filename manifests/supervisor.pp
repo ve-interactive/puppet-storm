@@ -29,6 +29,7 @@ class storm::supervisor(
     '-Dlogfile.name=supervisor.log'
   ],
   $config_file               = $storm::config_file,
+  $from_tarball              = false,
 ) inherits storm {
 
   validate_bool($enable)

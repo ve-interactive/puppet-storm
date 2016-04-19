@@ -28,7 +28,8 @@ class storm::drpc(
   $transactional_zookeeper_root    = '/transactional',
   $transactional_zookeeper_servers = 'null',
   $transactional_zookeeper_port    = 'null',
-  $config_file                     = $storm::config_file
+  $config_file                     = $storm::config_file,
+  $from_tarball                    = false,
 ) inherits storm {
 
   validate_array($jvm)

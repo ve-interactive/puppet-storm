@@ -24,6 +24,7 @@ class storm::ui(
     '-Dlogfile.name=ui.log'
   ],
   $config_file    = $storm::config_file,
+  $from_tarball   = false,
   ) inherits storm {
   validate_bool($manage_service)
   validate_array($jvm)
