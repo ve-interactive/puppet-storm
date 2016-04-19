@@ -1,7 +1,7 @@
 
 #_ NIMBUS _#
 nimbus.seeds : [<% @seeds.each do |s| -%>
-    "<%= z -%>",
+    "<%= s -%>",
 <% end-%>]
 nimbus.thrift.port:  <%= @thrift_port %>
 nimbus.thrift.threads: <%= @thrift_threads %>
