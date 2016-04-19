@@ -51,7 +51,7 @@ class storm::supervisor(
     config_file           => $config_file,
     jvm_memory            => $mem,
     opts                  => $jvm,
-    use_systemd_templates => $use_systemd_templates,
+    use_systemd_templates => $install_from_tarball,
   }
 
   storm::service { 'logviewer':
@@ -60,7 +60,7 @@ class storm::supervisor(
     force_provider        => $force_provider,
     config_file           => $config_file,
     jvm_memory            => '128m',
-    use_systemd_templates => $use_systemd_templates,
+    use_systemd_templates => $install_from_tarball,
   }
 
 

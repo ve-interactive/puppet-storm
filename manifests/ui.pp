@@ -44,7 +44,7 @@ class storm::ui(
     config_file           => $config_file,
     jvm_memory            => $mem,
     opts                  => $jvm,
-    use_systemd_templates => $use_systemd_templates,
+    use_systemd_templates => $install_from_tarball,
   }
 
 }

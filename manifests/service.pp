@@ -31,7 +31,8 @@ define storm::service(
   $use_systemd_templates = false,
   ) {
 
-    if $from_tarball {
+    # The included systemd templates are provided in case you want to install from the apache tarball and still have services.
+    if $use_systemd_templates {
 
       file { "/etc/systemd/system/storm-${name}.service":
         content => template("storm/systemd/storm-${name}.service"),
@@ -49,7 +50,7 @@ define storm::service(
         }
       }
 
-    } else { # Not from tarball
+    } else { # Not using the included systemd templates (provided in case you want to install from the apache tarball)
 
       file { "/etc/default/storm-${name}":
         content => template('storm/default-service.erb'),
