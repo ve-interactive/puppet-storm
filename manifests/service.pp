@@ -19,16 +19,16 @@
 #               }
 #
 define storm::service(
-  $ensure_service = 'running',
-  $manage_service = false,
-  $force_provider = undef,
-  $config_file    = '/etc/storm/storm.yaml',
-  $enable         = true,
-  $jvm_memory     = '768m',
-  $opts           = [],
-  $user           = 'root',
-  $owner          = 'root',
-  $from_tarball   = false,
+  $ensure_service        = 'running',
+  $manage_service        = false,
+  $force_provider        = undef,
+  $config_file           = '/etc/storm/storm.yaml',
+  $enable                = true,
+  $jvm_memory            = '768m',
+  $opts                  = [],
+  $user                  = 'root',
+  $owner                 = 'root',
+  $use_systemd_templates = false,
   ) {
 
     if $from_tarball {
