@@ -1,6 +1,6 @@
 
 #_ NIMBUS _#
-nimbus.seeds : [<%- @seeds.each do |s| -%> "<%= s -%>", <% end-%>]
+nimbus.seeds : [<%- @seeds.each do |s| -%> "<%= s %>", <% end-%>]
 nimbus.thrift.port:  <%= @thrift_port %>
 nimbus.thrift.threads: <%= @thrift_threads %>
 nimbus.thrift.max_buffer_size: 1048576
