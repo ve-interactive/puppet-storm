@@ -22,7 +22,6 @@ class storm::drpc(
     '-Dlog4j.configuration=file:/etc/storm/storm.log.properties',
     '-Dlogfile.name=drpc.log'],
   $port                            = 3772,
-  $servers                         = [''],
   $invocations_port                = 3773,
   $request_timeout_secs            = 600,
   $transactional_zookeeper_root    = '/transactional',
@@ -32,7 +31,6 @@ class storm::drpc(
 ) inherits storm {
 
   validate_array($jvm)
-  validate_array($servers)
 
   concat::fragment { 'drpc':
     ensure  => present,
