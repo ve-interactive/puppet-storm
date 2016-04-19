@@ -29,6 +29,7 @@ class storm::supervisor(
     '-Dlogfile.name=supervisor.log'
   ],
   $config_file               = $storm::config_file,
+  $use_systemd_templates     = false,
 ) inherits storm {
 
   validate_bool($enable)
@@ -50,7 +51,7 @@ class storm::supervisor(
     config_file           => $config_file,
     jvm_memory            => $mem,
     opts                  => $jvm,
-    use_systemd_templates => $install_from_tarball,
+    use_systemd_templates => $use_systemd_templates,
   }
 
   storm::service { 'logviewer':
@@ -59,7 +60,7 @@ class storm::supervisor(
     force_provider        => $force_provider,
     config_file           => $config_file,
     jvm_memory            => '128m',
-    use_systemd_templates => $install_from_tarball,
+    use_systemd_templates => $use_systemd_templates,
   }
 
 
