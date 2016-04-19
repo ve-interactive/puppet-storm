@@ -28,33 +28,55 @@ define storm::service(
   $opts           = [],
   $user           = 'root',
   $owner          = 'root',
+  $from_tarball   = false,
   ) {
 
-  file { "/etc/default/storm-${name}":
-    content => template('storm/default-service.erb'),
-    owner   => $owner,
-    group   => $user,
-    mode    => '0644',
-    require => Class['storm::install'],
-  }
+    if $from_tarball {
 
-  notify { "storm-${name}":
-    message  =>   "service ${name} enable ${enable} manage ${manage_service}",
-    withpath => true,
-  }
+      file { "/etc/systemd/system/storm-${name}.service":
+        content => template("storm/systemd/storm-${name}.service"),
+        owner   => $owner,
+        group   => $user,
+        mode    => '0644',
+        require => Class['storm::install'],
+      }
 
-  if $manage_service {
-    service { "storm-${name}":
-      ensure     => $ensure_service,
-      hasstatus  => true,
-      hasrestart => true,
-      enable     => $enable,
-      provider   => $force_provider,
-      require    => File["/etc/default/storm-${name}"],
-      subscribe  => [ File[$config_file],
-        File['/etc/default/storm'],
-        File["/etc/default/storm-${name}"]
-      ],
+      if $manage_service {
+        service { "storm-${name}":
+          ensure  => $ensure_service,
+          enable  => $enable,
+          require => File["/etc/systemd/system/storm-${name}.service"]
+        }
+      }
+
+    } else { # Not from tarball
+
+      file { "/etc/default/storm-${name}":
+        content => template('storm/default-service.erb'),
+        owner   => $owner,
+        group   => $user,
+        mode    => '0644',
+        require => Class['storm::install'],
+      }
+
+      notify { "storm-${name}":
+        message  =>   "service ${name} enable ${enable} manage ${manage_service}",
+        withpath => true,
+      }
+
+      if $manage_service {
+        service { "storm-${name}":
+          ensure     => $ensure_service,
+          hasstatus  => true,
+          hasrestart => true,
+          enable     => $enable,
+          provider   => $force_provider,
+          require    => File["/etc/default/storm-${name}"],
+          subscribe  => [ File[$config_file],
+            File['/etc/default/storm'],
+            File["/etc/default/storm-${name}"]
+          ],
+        }
+      }
     }
-  }
 }

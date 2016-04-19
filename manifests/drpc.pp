@@ -50,6 +50,7 @@ class storm::drpc(
     config_file    => $config_file,
     jvm_memory     => $mem,
     opts           => $jvm,
+    from_tarball   => $from_tarball,
   }
 
 }

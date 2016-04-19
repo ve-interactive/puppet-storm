@@ -52,6 +52,7 @@ class storm::nimbus(
     ensure_service => $ensure_service,
     jvm_memory     => $mem,
     opts           => $jvm,
+    from_tarball   => $from_tarball,
     require        => Class['storm::config']
   }
 }
