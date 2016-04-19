@@ -1,10 +1,10 @@
+
 #_ UI _#
-ui.host: 0.0.0.0
-ui.port:  <%= @port %>
+ui.port: <%= @port %>
 ui.childopts: "<%= @childopts %>"
 ui.actions.enabled: true
 ui.filter: null
 ui.filter.params: null
 ui.users: null
 ui.header.buffer.bytes: 4096
-ui.http.creds.plugin: org.apache.storm.security.auth.DefaultHttpCredentialsPlugin
+ui.http.creds.plugin: backtype.storm.security.auth.DefaultHttpCredentialsPlugin

@@ -13,7 +13,7 @@ class storm(
   $user                                        = 'root',
   $group                                       = 'root',
   $home                                        = '/usr/lib/storm',
-  $version                                     = '0.10.0',
+  $version                                     = '1.0.0',
   $lib                                         = '/usr/lib/storm/lib',
 
   # Install from apache repositories
@@ -39,7 +39,8 @@ class storm(
   $config_file                                 = '/etc/storm/storm.yaml',
   $dev_zookeeper_path                          = '/tmp/dev-storm-zookeeper',
     #_ WORKERS _#
-  $worker_childopts                            = '-Xmx768m',
+  $worker_heap_memory_mb                       = 768,
+  $worker_childopts                            = '-Xmx%HEAP-MEM%m -XX:+PrintGCDetails -Xloggc:artifacts/gc.log -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=1M -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=artifacts/heapdump',
   $worker_heartbeat_frequency_secs             = 1,
   $task_heartbeat_frequency_secs               = 3,
   $task_refresh_poll_secs                      = 10,
@@ -62,9 +63,7 @@ class storm(
   #_ TOPOLOGY _#
   $topology_kryo_register                      = [''],
   $topology_debug                              = false,
-  $topology_optimize                           = true,
   $topology_workers                            = 1,
-  $topology_ackers                             = 1,
   $topology_message_timeout_secs               = 30,
   $topology_skip_missing_kryo_registrations    = false,
   $topology_max_task_parallelism               = 'null',
