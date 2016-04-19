@@ -18,6 +18,7 @@ class storm::supervisor(
   $mem                       = '1024m',
   $start_port                = 6700,
   $workers                   = 4,
+  $cpu_capacity              = 400,
   $childopts                 = '-Xmx1024m',
   $worker_start_timeout_secs = 120,
   $worker_timeout_secs       = 30,
