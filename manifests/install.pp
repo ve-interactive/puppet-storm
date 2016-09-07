@@ -25,15 +25,17 @@ class storm::install(
     ensure_resource('package', 'wget', {'ensure' => present })
 
     exec { 'download_storm_tarball':
-      command => "/usr/bin/wget ${apache_repo_url}/apache-storm-${version}/apache-storm-${version}.tar.gz",
+      command => "wget ${apache_repo_url}/apache-storm-${version}/apache-storm-${version}.tar.gz",
       cwd     => '/tmp',
+      path    => $::path,
       creates => "/tmp/apache-storm-${version}.tar.gz",
     }
 
     exec { 'decompress_tarball':
-      command => "/usr/bin/tar -xzf /tmp/apache-storm-${version}.tar.gz",
+      command => "tar -xzf /tmp/apache-storm-${version}.tar.gz",
       cwd     => '/usr/lib',
       creates => "/usr/lib/apache-storm-${version}",
+      path    => $::path,
       require => Exec['download_storm_tarball'],
     }
 
