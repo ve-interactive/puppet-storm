@@ -13,8 +13,13 @@ class storm(
   $user                                        = 'root',
   $group                                       = 'root',
   $home                                        = '/usr/lib/storm',
-  $version                                     = '0.9.3',
+  $version                                     = '1.0.0',
   $lib                                         = '/usr/lib/storm/lib',
+
+  # Install from apache repositories
+  $install_from_tarball                        = false,
+  $apache_repo_url                             = 'https://archive.apache.org/dist/storm/',
+
   # JAR path will be "$lib/$jar_prefix-$version.jar"
   $jar_prefix                                  = 'storm',
   $conf                                        = '/etc/storm',
@@ -34,7 +39,8 @@ class storm(
   $config_file                                 = '/etc/storm/storm.yaml',
   $dev_zookeeper_path                          = '/tmp/dev-storm-zookeeper',
     #_ WORKERS _#
-  $worker_childopts                            = '-Xmx768m',
+  $worker_heap_memory_mb                       = 768,
+  $worker_childopts                            = '-Xmx%HEAP-MEM%m -XX:+PrintGCDetails -Xloggc:artifacts/gc.log -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=1M -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=artifacts/heapdump',
   $worker_heartbeat_frequency_secs             = 1,
   $task_heartbeat_frequency_secs               = 3,
   $task_refresh_poll_secs                      = 10,
@@ -57,9 +63,7 @@ class storm(
   #_ TOPOLOGY _#
   $topology_kryo_register                      = [''],
   $topology_debug                              = false,
-  $topology_optimize                           = true,
   $topology_workers                            = 1,
-  $topology_ackers                             = 1,
   $topology_message_timeout_secs               = 30,
   $topology_skip_missing_kryo_registrations    = false,
   $topology_max_task_parallelism               = 'null',
@@ -78,9 +82,15 @@ class storm(
   validate_array($zookeeper_servers)
   validate_array($topology_kryo_register)
 
+
   class {'storm::install':
-    ensure   => $packages_ensure,
-    packages => $packages,
+    ensure          => $packages_ensure,
+    packages        => $packages,
+    from_tarball    => $install_from_tarball,
+    version         => $version,
+    home            => $home,
+    conf            => $conf,
+    apache_repo_url => $apache_repo_url,
   }
 
   class {'storm::config':

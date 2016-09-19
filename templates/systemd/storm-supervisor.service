@@ -1,0 +1,12 @@
+[Unit]
+Description=Storm Supervisor Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/lib/storm/bin/storm supervisor
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

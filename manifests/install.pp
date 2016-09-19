@@ -14,8 +14,58 @@
 class storm::install(
   $packages = ['storm'],
   $ensure   = 'latest',
+  $from_tarball = false,
+  $version,
+  $home,
+  $conf,
+  $apache_repo_url,
 ) {
 
-  ensure_resource('package', $packages, {'ensure' => $ensure })
+  if $from_tarball {
+    ensure_resource('package', 'wget', {'ensure' => present })
+
+    exec { 'download_storm_tarball':
+      command => "wget ${apache_repo_url}/apache-storm-${version}/apache-storm-${version}.tar.gz",
+      cwd     => '/tmp',
+      path    => $::path,
+      creates => "/tmp/apache-storm-${version}.tar.gz",
+    }
+
+    exec { 'decompress_tarball':
+      command => "tar -xzf /tmp/apache-storm-${version}.tar.gz",
+      cwd     => '/usr/lib',
+      creates => "/usr/lib/apache-storm-${version}",
+      path    => $::path,
+      require => Exec['download_storm_tarball'],
+    }
+
+    file { $home:
+      ensure  => 'link',
+      force   => true,
+      target  => "/usr/lib/apache-storm-${version}",
+      require => Exec['decompress_tarball'],
+    }
+
+    file { $conf:
+      ensure  => 'link',
+      force   => true,
+      target  => "/usr/lib/apache-storm-${version}/conf",
+      require => File[$home],
+    }
+
+    file { '/var/log/storm':
+        ensure => 'directory'
+    }
+
+    file { "${home}/logs":
+        ensure => 'link',
+        target => '/var/log/storm',
+        require => File['/var/log/storm'],
+    }
+
+
+  } else {
+    ensure_resource('package', $packages, {'ensure' => $ensure })
+  }
 
 }

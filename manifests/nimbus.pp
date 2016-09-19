@@ -14,9 +14,9 @@ class storm::nimbus(
   $ensure_service            = 'running',
   $force_provider            = undef,
   $mem                       = '1024m',
-  $host                      = 'localhost',
+  $seeds                     = [ 'localhost' ],
   $thrift_port               = 6627,
-  $thrift_threads            = 256,
+  $thrift_threads            = 64,
   $childopts                 = '-Xmx1024m',
   $task_timeout_secs         = 30,
   $supervisor_timeout_secs   = 60,
@@ -32,7 +32,8 @@ class storm::nimbus(
   $jvm                       = [
     '-Dlog4j.configuration=file:/etc/storm/storm.log.properties',
     '-Dlogfile.name=nimbus.log'],
-  $config_file               = $storm::config_file
+  $config_file               = $storm::config_file,
+  $use_systemd_templates     = false,
 ) inherits storm {
 
   concat::fragment { 'nimbus':
@@ -45,13 +46,14 @@ class storm::nimbus(
   # Install nimbus /etc/default
 
   storm::service { 'nimbus':
-    manage_service => $manage_service,
-    config_file    => $config_file,
-    force_provider => $force_provider,
-    enable         => $enable,
-    ensure_service => $ensure_service,
-    jvm_memory     => $mem,
-    opts           => $jvm,
-    require        => Class['storm::config']
+    manage_service        => $manage_service,
+    config_file           => $config_file,
+    force_provider        => $force_provider,
+    enable                => $enable,
+    ensure_service        => $ensure_service,
+    jvm_memory            => $mem,
+    opts                  => $jvm,
+    use_systemd_templates => $install_from_tarball,
+    require               => Class['storm::config']
   }
 }

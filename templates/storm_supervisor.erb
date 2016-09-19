@@ -1,14 +1,25 @@
 
 #_ SUPERVISOR _#
+# Define the amount of workers that can be run on this machine. Each worker is assigned a port to use for communication
 supervisor.slots.ports: <% for i in (@start_port.to_i ... (@start_port.to_i + @workers.to_i)) %>
     - <%= i %><% end %>
 supervisor.childopts: "<%= @childopts %>"
 supervisor.run.worker.as.user: false
+#how long supervisor will wait to ensure that a worker process is started
 supervisor.worker.start.timeout.secs: <%= @worker_start_timeout_secs %>
+#how long between heartbeats until supervisor considers that worker dead and tries to restart it
 supervisor.worker.timeout.secs: <%= @worker_timeout_secs %>
+#how many seconds to sleep for before shutting down threads on worker
+supervisor.worker.shutdown.sleep.secs: 1
+#how frequently the supervisor checks on the status of the processes it's monitoring and restarts if necessary
 supervisor.monitor.frequency.secs: <%= @monitor_frequency_secs %>
+#how frequently the supervisor heartbeats to the cluster state (for nimbus)
 supervisor.heartbeat.frequency.secs: <%= @heartbeat_frequency_secs %>
 supervisor.enable: <%= @enable %>
-supervisor.worker.shutdown.sleep.secs: 1
 supervisor.supervisors: []
 supervisor.supervisors.commands: []
+supervisor.memory.capacity.mb: 3072.0
+#By convention 1 cpu core should be about 100, but this can be adjusted if needed
+# using 100 makes it simple to set the desired value to the capacity measurement
+# for single threaded bolts
+supervisor.cpu.capacity: <%= @cpu_capacity %>

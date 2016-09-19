@@ -13,17 +13,19 @@
 #  class {'storm::ui': }
 #
 class storm::ui(
-  $manage_service = false,
-  $enable         = true,
-  $force_provider = undef,
-  $mem            = '1024m',
-  $port           = '8080',
-  $childopts      = '-Xmx768m',
-  $jvm            = [
+  $manage_service        = false,
+  $enable                = true,
+  $force_provider        = undef,
+  $mem                   = '1024m',
+  $port                  = '8080',
+  $host                  = '0.0.0.0',
+  $childopts             = '-Xmx768m',
+  $jvm                   = [
     '-Dlog4j.configuration=file:/etc/storm/storm.log.properties',
     '-Dlogfile.name=ui.log'
   ],
-  $config_file    = $storm::config_file,
+  $config_file           = $storm::config_file,
+  $use_systemd_templates = false,
   ) inherits storm {
   validate_bool($manage_service)
   validate_array($jvm)
@@ -37,12 +39,13 @@ class storm::ui(
 
   # Install ui /etc/default
   storm::service { 'ui':
-    manage_service => $manage_service,
-    force_provider => $force_provider,
-    enable         => $enable,
-    config_file    => $config_file,
-    jvm_memory     => $mem,
-    opts           => $jvm,
+    manage_service        => $manage_service,
+    force_provider        => $force_provider,
+    enable                => $enable,
+    config_file           => $config_file,
+    jvm_memory            => $mem,
+    opts                  => $jvm,
+    use_systemd_templates => $install_from_tarball,
   }
 
 }
