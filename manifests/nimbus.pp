@@ -43,6 +43,13 @@ class storm::nimbus(
     order   => 2,
   }
 
+  concat::fragment { 'metrics_plugin':
+    ensure  => present,
+    target  => $config_file,
+    content => template("${module_name}/storm_metrics_plugin.erb"),
+    order   => 7,
+  }
+
   # Install nimbus /etc/default
 
   storm::service { 'nimbus':

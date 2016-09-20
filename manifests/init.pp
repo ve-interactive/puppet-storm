@@ -72,6 +72,7 @@ class storm(
   $topology_stats_sample_rate                  = '0.05',
   $topology_fall_back_on_java_serialization    = true,
   $topology_worker_childopts                   = 'null',
+  $topology_metrics_plugins                    = [],
   $packages                                    = ['storm'],
   $packages_ensure                             = 'present',
 ) {

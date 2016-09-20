@@ -1,0 +1,9 @@
+<% if @topology_metrics_plugins.length > 0 -%>
+topology.metrics.consumer.register:
+  <%- @topology_metrics_plugins.each do |s| -%>
+  - class: <%= s['class'] %>
+    parallelism.hint: <%= s['parallelism.hint'] %>
+    argument: <%- s['argument'].each do |k,v| %>
+      <%= k %>: <%= v %><% end %>
+  <% end -%>
+<% end -%>
